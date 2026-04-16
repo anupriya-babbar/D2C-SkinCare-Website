@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>glōw — Your Skincare Destination</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-logo">gl<span>ō</span>w</div>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" id="nav-home" class="active">Explore</a></li>
+    <li><a onclick="showPage('compare')" id="nav-compare">Compare</a></li>
+    <li><a onclick="showPage('copilot')" id="nav-copilot">✨ Copilot</a></li>
+    <li><a onclick="showPage('feedback')" id="nav-feedback">Reviews</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="icon-btn" onclick="showPage('cart')" title="Cart">
+      🛍️
+      <div class="nav-badge" id="cart-count">0</div>
+    </button>
+  </div>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">✦ Science-backed beauty</div>
+      <h1 class="hero-title">Discover your<br><strong>perfect skin</strong><br>ritual</h1>
+      <p class="hero-sub">Compare top brands, explore by skin type, and get personalised recommendations — all in one beautiful place.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="document.getElementById('explore-section').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+        <button class="btn btn-outline" onclick="showPage('copilot')">✨ Try Skin Copilot</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <div class="hero-card-img">🧴</div>
+        <div class="hero-card-name">Hydra Boost</div>
+        <div class="hero-card-price">₹1,299</div>
+      </div>
+      <div class="hero-card" style="margin-top:2rem;">
+        <div class="hero-card-img">✨</div>
+        <div class="hero-card-name">Glow Serum</div>
+        <div class="hero-card-price">₹2,499</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-img">🌿</div>
+        <div class="hero-card-name">Neem Clay</div>
+        <div class="hero-card-price">₹799</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trust-bar">
+    <div class="trust-item"><span class="trust-icon">🚀</span> Free delivery above ₹599</div>
+    <div class="trust-item"><span class="trust-icon">↩️</span> Easy 15-day returns</div>
+    <div class="trust-item"><span class="trust-icon">💎</span> 500+ authentic brands</div>
+    <div class="trust-item"><span class="trust-icon">🔒</span> 100% genuine products</div>
+    <div class="trust-item"><span class="trust-icon">🌿</span> Cruelty-free certified</div>
+  </div>
+
+  <div class="section" id="explore-section">
+    <div class="section-header">
+      <h2 class="section-title">Explore <span>Products</span></h2>
+      <span style="font-size:13px;color:var(--text-light);" id="product-count">24 products</span>
+    </div>
+    <div class="cats">
+      <div class="cat-pill active" onclick="filterCat(this,'all')">All</div>
+      <div class="cat-pill" onclick="filterCat(this,'serum')">Serums</div>
+      <div class="cat-pill" onclick="filterCat(this,'moisturizer')">Moisturisers</div>
+      <div class="cat-pill" onclick="filterCat(this,'cleanser')">Cleansers</div>
+      <div class="cat-pill" onclick="filterCat(this,'toner')">Toners</div>
+      <div class="cat-pill" onclick="filterCat(this,'sunscreen')">Sunscreens</div>
+      <div class="cat-pill" onclick="filterCat(this,'mask')">Masks</div>
+      <div class="cat-pill" onclick="filterCat(this,'eye')">Eye Care</div>
+    </div>
+    <div class="filter-bar">
+      <select class="filter-select" onchange="applySortFilter(this.value)">
+        <option value="">Sort: Featured</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+      </select>
+      <div class="skin-filter">
+        <div class="skin-chip active" onclick="filterSkin(this,'all')">All Skin Types</div>
+        <div class="skin-chip" onclick="filterSkin(this,'oily')">Oily</div>
+        <div class="skin-chip" onclick="filterSkin(this,'dry')">Dry</div>
+        <div class="skin-chip" onclick="filterSkin(this,'combination')">Combination</div>
+        <div class="skin-chip" onclick="filterSkin(this,'sensitive')">Sensitive</div>
+        <div class="skin-chip" onclick="filterSkin(this,'normal')">Normal</div>
+      </div>
+    </div>
+    <div id="compare-notice" style="display:none" class="compare-bar-top">
+      <span>✓ <span id="compare-count-text">0</span> products selected for comparison</span>
+      <button class="btn btn-sm compare-now-btn" onclick="showPage('compare')">Compare Now →</button>
+    </div>
+    <div class="product-grid" id="product-grid"></div>
+  </div>
+</div>
+
+<!-- COMPARE PAGE -->
+<div class="page" id="page-compare">
+  <div class="section">
+    <button class="back-btn" onclick="showPage('home')">← Back to Explore</button>
+    <div class="section-header">
+      <h2 class="section-title">Side-by-Side <span>Compare</span></h2>
+      <button class="btn btn-outline btn-sm" onclick="clearCompare()">Clear All</button>
+    </div>
+    <div id="compare-content"></div>
+  </div>
+</div>
+
+<!-- COPILOT PAGE -->
+<div class="page" id="page-copilot">
+  <div class="section">
+    <div class="copilot-wrap">
+      <div class="copilot-header">
+        <div class="copilot-avatar">✨</div>
+        <h2 class="copilot-title">Your Skin Copilot</h2>
+        <p class="copilot-sub">Tell me your skin concerns and I'll find the perfect products for you</p>
+      </div>
+      <div class="copilot-suggestions">
+        <div class="suggestion-pill" onclick="sendSuggestion(this)">I have oily skin with acne</div>
+        <div class="suggestion-pill" onclick="sendSuggestion(this)">Best serum for dry skin</div>
+        <div class="suggestion-pill" onclick="sendSuggestion(this)">Compare Minimalist vs The Ordinary</div>
+        <div class="suggestion-pill" onclick="sendSuggestion(this)">Routine for sensitive skin</div>
+        <div class="suggestion-pill" onclick="sendSuggestion(this)">Budget-friendly moisturiser</div>
+      </div>
+      <div class="chat-msgs" id="chat-msgs"></div>
+      <div class="chat-input-wrap">
+        <input class="chat-input" id="chat-input" placeholder="Ask about skin types, products, routines…" onkeydown="if(event.key==='Enter')sendChat()">
+        <button class="chat-send" onclick="sendChat()">Send ↗</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CART PAGE -->
+<div class="page" id="page-cart">
+  <div class="section">
+    <button class="back-btn" onclick="showPage('home')">← Continue Shopping</button>
+    <h2 class="section-title" style="margin-bottom:1.5rem;">Your <span>Cart</span></h2>
+    <div id="cart-content"></div>
+  </div>
+</div>
+
+<!-- PRODUCT DETAIL PAGE -->
+<div class="page" id="page-detail">
+  <div class="section">
+    <button class="back-btn" onclick="showPage('home')">← Back to Explore</button>
+    <div id="detail-content"></div>
+  </div>
+</div>
+
+<!-- FEEDBACK PAGE -->
+<div class="page" id="page-feedback">
+  <div class="section">
+    <div class="feedback-layout">
+      <div class="feedback-wrap">
+        <h2 class="feedback-title">Share your<br>experience</h2>
+        <p class="feedback-sub">Help the community make better choices</p>
+        <div class="form-group">
+          <label class="form-label">Select Product</label>
+          <select class="form-input" id="fb-product">
+            <option value="">Choose a product…</option>
+            <option>Minimalist 10% Niacinamide Serum</option>
+            <option>Neutrogena Hydro Boost Gel</option>
+            <option>Dot & Key Barrier Repair Cream</option>
+            <option>Plum Green Tea Toner</option>
+            <option>Lakme Sun Expert SPF 50</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your skin type</label>
+          <select class="form-input" id="fb-skin">
+            <option value="">Select skin type…</option>
+            <option>Oily</option><option>Dry</option><option>Combination</option><option>Sensitive</option><option>Normal</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Overall rating</label>
+          <div class="star-rate" id="star-rate">
+            <span onclick="setRating(1)">☆</span>
+            <span onclick="setRating(2)">☆</span>
+            <span onclick="setRating(3)">☆</span>
+            <span onclick="setRating(4)">☆</span>
+            <span onclick="setRating(5)">☆</span>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your review</label>
+          <textarea class="form-input form-textarea" id="fb-review" placeholder="How did this product work for your skin?"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Your name</label>
+          <input class="form-input" id="fb-name" placeholder="e.g. Priya S.">
+        </div>
+        <button class="btn btn-primary" style="width:100%;" onclick="submitFeedback()">Submit Review</button>
+      </div>
+      <div class="reviews-col">
+        <h3 class="reviews-col-title">Community <span>Reviews</span></h3>
+        <div id="reviews-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
